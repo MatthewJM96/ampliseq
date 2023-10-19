@@ -171,17 +171,18 @@ include { SBDIEXPORTREANNOTATE          } from '../modules/local/sbdiexportreann
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 
-include { PARSE_INPUT                   } from '../subworkflows/local/parse_input'
-include { DADA2_PREPROCESSING           } from '../subworkflows/local/dada2_preprocessing'
-include { QIIME2_PREPTAX                } from '../subworkflows/local/qiime2_preptax'
-include { QIIME2_TAXONOMY               } from '../subworkflows/local/qiime2_taxonomy'
-include { CUTADAPT_WORKFLOW             } from '../subworkflows/local/cutadapt_workflow'
-include { DADA2_TAXONOMY_WF             } from '../subworkflows/local/dada2_taxonomy_wf'
-include { SINTAX_TAXONOMY_WF            } from '../subworkflows/local/sintax_taxonomy_wf'
-include { QIIME2_EXPORT                 } from '../subworkflows/local/qiime2_export'
-include { QIIME2_BARPLOTAVG             } from '../subworkflows/local/qiime2_barplotavg'
-include { QIIME2_DIVERSITY              } from '../subworkflows/local/qiime2_diversity'
-include { QIIME2_ANCOM                  } from '../subworkflows/local/qiime2_ancom'
+include { PARSE_INPUT                     } from '../subworkflows/local/parse_input'
+include { DADA2_PREPROCESSING             } from '../subworkflows/local/dada2_preprocessing'
+include { QIIME2_PREPTAX                  } from '../subworkflows/local/qiime2_preptax'
+include { QIIME2_TAXONOMY                 } from '../subworkflows/local/qiime2_taxonomy'
+include { QIIME2_TAXONOMY_CONSENSUS_BLAST } from '../subworkflows/local/qiime2_taxonomy_consensus_blast'
+include { CUTADAPT_WORKFLOW               } from '../subworkflows/local/cutadapt_workflow'
+include { DADA2_TAXONOMY_WF               } from '../subworkflows/local/dada2_taxonomy_wf'
+include { SINTAX_TAXONOMY_WF              } from '../subworkflows/local/sintax_taxonomy_wf'
+include { QIIME2_EXPORT                   } from '../subworkflows/local/qiime2_export'
+include { QIIME2_BARPLOTAVG               } from '../subworkflows/local/qiime2_barplotavg'
+include { QIIME2_DIVERSITY                } from '../subworkflows/local/qiime2_diversity'
+include { QIIME2_ANCOM                    } from '../subworkflows/local/qiime2_ancom'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -477,6 +478,17 @@ workflow AMPLISEQ {
                 ch_qiime_classifier = QIIME2_TRAIN.out.qza
             }
         }
+
+        if (params.blast_consensus_taxonomy) {
+            QIIME2_TAXONOMY_CONSENSUS_BLAST(
+                ch_fasta
+            )
+            ch_blast_consensus_tax = QIIME2_TAXONOMY_CONSENSUS_BLAST.out.tsv
+            ch_versions = ch_versions.mix( QIIME2_TAXONOMY_CONSENSUS_BLAST.out.versions.ifEmpty(null) )
+        } else {
+            ch_blast_consensus_tax = Channel.empty()
+        }
+
         QIIME2_TAXONOMY (
             ch_fasta,
             ch_qiime_classifier
@@ -512,6 +524,9 @@ workflow AMPLISEQ {
         } else if ( params.dada_ref_taxonomy && !params.skip_dada_taxonomy ) {
             log.info "Use DADA2 taxonomy classification"
             ch_tax = QIIME2_INTAX ( ch_dada2_tax ).qza
+        } else if ( params.blast_consensus_taxonomy ) {
+            log.info "Use QIIME2 consensus Blast taxonomy classification"
+            ch_tax = QIIME2_TAXONOMY_CONSENSUS_BLAST.out.qza
         } else if ( params.qiime_ref_taxonomy || params.classifier ) {
             log.info "Use QIIME2 taxonomy classification"
             ch_tax = QIIME2_TAXONOMY.out.qza
@@ -545,7 +560,7 @@ workflow AMPLISEQ {
         }
         //Export various ASV tables
         if (!params.skip_abundance_tables) {
-            QIIME2_EXPORT ( ch_asv, ch_seq, ch_tax, QIIME2_TAXONOMY.out.tsv, ch_dada2_tax, ch_pplace_tax, ch_sintax_tax, tax_agglom_min, tax_agglom_max )
+            QIIME2_EXPORT ( ch_asv, ch_seq, ch_tax, QIIME2_TAXONOMY.out.tsv, ch_dada2_tax, ch_pplace_tax, ch_sintax_tax, ch_blast_consensus_tax, tax_agglom_min, tax_agglom_max )
         }
 
         if (!params.skip_barplot) {
