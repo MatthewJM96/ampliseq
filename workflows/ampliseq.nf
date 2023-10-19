@@ -155,6 +155,7 @@ include { QIIME2_INSEQ                  } from '../modules/local/qiime2_inseq'
 include { QIIME2_FILTERTAXA             } from '../modules/local/qiime2_filtertaxa'
 include { QIIME2_INASV                  } from '../modules/local/qiime2_inasv'
 include { QIIME2_INTREE                 } from '../modules/local/qiime2_intree'
+include { QIIME2_TRAIN                  } from '../modules/local/qiime2_train'
 include { FORMAT_PPLACETAX              } from '../modules/local/format_pplacetax'
 include { FILTER_STATS                  } from '../modules/local/filter_stats'
 include { MERGE_STATS as MERGE_STATS_FILTERTAXA } from '../modules/local/merge_stats'
@@ -464,13 +465,17 @@ workflow AMPLISEQ {
 
     //QIIME2
     if ( run_qiime2 ) {
-        if (params.qiime_ref_taxonomy && !params.classifier) {
+        if (params.qiime_ref_taxonomy) {
             QIIME2_PREPTAX (
                 ch_qiime_ref_taxonomy.collect(),
                 params.FW_primer,
                 params.RV_primer
             )
-            ch_qiime_classifier = QIIME2_PREPTAX.out.classifier
+
+            if (!params.classifier) {
+                QIIME2_TRAIN(QIIME2_PREPTAX.out.qza)
+                ch_qiime_classifier = QIIME2_TRAIN.out.qza
+            }
         }
         QIIME2_TAXONOMY (
             ch_fasta,

@@ -1,10 +1,10 @@
 /*
- * Training of a classifier with QIIME2
+ * Prepares reference taxonomy for either training a classifier or for use in consensus
+ * blast classification.
  */
 
 include { FORMAT_TAXONOMY_QIIME } from '../../modules/local/format_taxonomy_qiime'
 include { QIIME2_EXTRACT        } from '../../modules/local/qiime2_extract'
-include { QIIME2_TRAIN          } from '../../modules/local/qiime2_train'
 
 workflow QIIME2_PREPTAX {
     take:
@@ -25,9 +25,8 @@ workflow QIIME2_PREPTAX {
                 [ meta, db ] }
         .set { ch_ref_database }
     QIIME2_EXTRACT ( ch_ref_database )
-    QIIME2_TRAIN ( QIIME2_EXTRACT.out.qza )
 
     emit:
-    classifier      = QIIME2_TRAIN.out.qza
-    versions        = QIIME2_TRAIN.out.versions
+    qza      = QIIME2_EXTRACT.out.qza
+    versions = QIIME2_EXTRACT.out.versions
 }
