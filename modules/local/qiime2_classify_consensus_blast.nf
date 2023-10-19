@@ -29,9 +29,12 @@ process QIIME2_CLASSIFY_BLAST {
         --i-reference-reads ${blast_reference_qza}
         --i-reference-taxonomy ${blast_taxonomy_qza} \\
         --i-query ${repseq}  \\
-        --o-classification ${blast_db}  \\
+        --o-classification taxonomy.qza  \\
         --verbose
-
+    qiime metadata tabulate  \\
+        --m-input-file taxonomy.qza  \\
+        --o-visualization taxonomy.qzv  \\
+        --verbose
     #produce "taxonomy/taxonomy.tsv"
     qiime tools export \\
         --input-path taxonomy.qza  \\
@@ -39,7 +42,7 @@ process QIIME2_CLASSIFY_BLAST {
     qiime tools export \\
         --input-path taxonomy.qzv  \\
         --output-path taxonomy
-    cp taxonomy/blast_consensus_taxonomy.tsv .
+    cp taxonomy/taxonomy.tsv .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
