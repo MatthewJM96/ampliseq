@@ -19,6 +19,7 @@ workflow QIIME2_EXPORT {
     ch_DADA2_tax_tsv
     ch_pplace_tax_tsv
     ch_SINTAX_tax_tsv
+    ch_blast_consensus_tax
     tax_agglom_min
     tax_agglom_max
 
@@ -43,6 +44,9 @@ workflow QIIME2_EXPORT {
 
     //combine_table.r (optional), similar to DADA2_table.tsv but with additionally taxonomy merged
     COMBINE_TABLE_SINTAX ( QIIME2_EXPORT_RELASV.out.tsv, QIIME2_EXPORT_ABSOLUTE.out.fasta, ch_SINTAX_tax_tsv, 'rel-table-ASV_with-SINTAX-tax.tsv' )
+
+    //combine_table.r (optional), similar to DADA2_table.tsv but with additionally taxonomy merged
+    COMBINE_TABLE_SINTAX ( QIIME2_EXPORT_RELASV.out.tsv, QIIME2_EXPORT_ABSOLUTE.out.fasta, ch_blast_consensus_tax, 'rel-table-ASV_with-consensus-blast-tax.tsv' )
 
     emit:
     abs_fasta      = QIIME2_EXPORT_ABSOLUTE.out.fasta
