@@ -10,7 +10,6 @@ process QIIME2_CLASSIFY_BLAST {
     }
 
     input:
-    path(trained_classifier)
     path(repseq)
 
     output:
