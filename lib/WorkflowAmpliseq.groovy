@@ -80,10 +80,6 @@ class WorkflowAmpliseq {
             Nextflow.error("Incompatible parameters: `--FW_primer` and `--RV_primer` are required for cutting the DADA2 reference database to the amplicon sequences. Please specify primers or do not use `--cut_dada_ref_taxonomy`.")
         }
 
-        if (params.qiime_ref_taxonomy && params.classifier) {
-            Nextflow.error("Incompatible parameters: `--qiime_ref_taxonomy` will produce a classifier but `--classifier` points to a precomputed classifier, therefore, only use one of those.")
-        }
-
         if (params.filter_ssu && params.skip_barrnap) {
             Nextflow.error("Incompatible parameters: `--filter_ssu` cannot be used with `--skip_barrnap` because filtering for SSU's depends on barrnap.")
         }
