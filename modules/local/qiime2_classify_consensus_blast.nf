@@ -11,6 +11,7 @@ process QIIME2_CLASSIFY_BLAST {
 
     input:
     path(repseq)
+    path(reference_reads)
 
     output:
     path("taxonomy.qza"), emit: qza
@@ -26,7 +27,7 @@ process QIIME2_CLASSIFY_BLAST {
 
     qiime feature-classifier classify-consensus  \\
         --p-perc-identity 0.97  \\
-        --i-reference-reads ${blast_reference_qza}
+        --i-reference-reads ${reference_reads}
         --i-reference-taxonomy ${blast_taxonomy_qza} \\
         --i-query ${repseq}  \\
         --o-classification taxonomy.qza  \\

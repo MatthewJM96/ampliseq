@@ -481,7 +481,8 @@ workflow AMPLISEQ {
 
         if (params.blast_consensus_taxonomy) {
             QIIME2_TAXONOMY_CONSENSUS_BLAST(
-                ch_fasta
+                ch_fasta,
+                QIIME2_PREPTAX.out.qza
             )
             ch_blast_consensus_tax = QIIME2_TAXONOMY_CONSENSUS_BLAST.out.tsv
             ch_versions = ch_versions.mix( QIIME2_TAXONOMY_CONSENSUS_BLAST.out.versions.ifEmpty(null) )

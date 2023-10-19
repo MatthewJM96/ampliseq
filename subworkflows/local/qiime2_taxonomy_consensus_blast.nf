@@ -8,10 +8,11 @@ include { QIIME2_CLASSIFY_CONSENSUS_BLAST } from '../../modules/local/qiime2_cla
 workflow QIIME2_TAXONOMY_CONSENSUS_BLAST {
     take:
     ch_fasta
+    reference_reads
 
     main:
     QIIME2_INSEQ ( ch_fasta )
-    QIIME2_CLASSIFY_CONSENSUS_BLAST ( QIIME2_INSEQ.out.qza )
+    QIIME2_CLASSIFY_CONSENSUS_BLAST ( QIIME2_INSEQ.out.qza, reference_reads )
 
     emit:
     qza     = QIIME2_CLASSIFY_CONSENSUS_BLAST.out.qza
