@@ -1,4 +1,4 @@
-process QIIME2_CLASSIFY {
+process QIIME2_CLASSIFY_BLAST {
     tag "${repseq},${blast_db}
     label 'process_high'
 
