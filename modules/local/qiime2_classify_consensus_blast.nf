@@ -14,8 +14,8 @@ process QIIME2_CLASSIFY_BLAST {
     path(reference_reads)
 
     output:
-    path("taxonomy.qza"), emit: qza
-    path("taxonomy.tsv"), emit: tsv
+    path("blast_taxonomy.qza"), emit: qza
+    path("blast_taxonomy.tsv"), emit: tsv
     path "versions.yml" , emit: versions
 
     when:
@@ -38,12 +38,12 @@ process QIIME2_CLASSIFY_BLAST {
         --verbose
     #produce "taxonomy/taxonomy.tsv"
     qiime tools export \\
-        --input-path taxonomy.qza  \\
-        --output-path taxonomy
+        --input-path blast_taxonomy.qza  \\
+        --output-path blast_taxonomy
     qiime tools export \\
-        --input-path taxonomy.qzv  \\
-        --output-path taxonomy
-    cp taxonomy/taxonomy.tsv .
+        --input-path blast_taxonomy.qzv  \\
+        --output-path blast_taxonomy
+    cp taxonomy/blast_taxonomy.tsv .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
