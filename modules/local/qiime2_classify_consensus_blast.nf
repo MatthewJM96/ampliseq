@@ -14,8 +14,8 @@ process QIIME2_CLASSIFY_CONSENSUS_BLAST {
     path(reference_reads)
 
     output:
-    path("taxonomy.qza"), emit: qza
-    path("taxonomy.tsv"), emit: tsv
+    path("blast_taxonomy.qza"), emit: qza
+    path("blast_taxonomy.tsv"), emit: tsv
     path "versions.yml" , emit: versions
 
     when:
@@ -27,8 +27,8 @@ process QIIME2_CLASSIFY_CONSENSUS_BLAST {
 
     qiime feature-classifier classify-consensus  \\
         --p-perc-identity 0.97  \\
-        --i-reference-reads ${reference_reads}
-        --i-reference-taxonomy ${blast_taxonomy_qza} \\
+        --i-reference-reads ${meta.FW_primer}-${meta.RV_primer}-ref-seq.qza \\ as in qiime2_train.nf
+        --i-reference-taxonomy ref_taxonomy.qza \\ #as in qiime2_train.nf
         --i-query ${repseq}  \\
         --o-classification taxonomy.qza  \\
         --verbose
@@ -38,12 +38,12 @@ process QIIME2_CLASSIFY_CONSENSUS_BLAST {
         --verbose
     #produce "taxonomy/taxonomy.tsv"
     qiime tools export \\
-        --input-path taxonomy.qza  \\
-        --output-path taxonomy
+        --input-path blast_taxonomy.qza  \\
+        --output-path blast_taxonomy
     qiime tools export \\
-        --input-path taxonomy.qzv  \\
-        --output-path taxonomy
-    cp taxonomy/taxonomy.tsv .
+        --input-path blast_taxonomy.qzv  \\
+        --output-path blast_taxonomy
+    cp taxonomy/blast_taxonomy.tsv .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
