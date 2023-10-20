@@ -27,8 +27,8 @@ process QIIME2_CLASSIFY_CONSENSUS_BLAST {
 
     qiime feature-classifier classify-consensus  \\
         --p-perc-identity 0.97  \\
-        --i-reference-reads ${meta.FW_primer}-${meta.RV_primer}-ref-seq.qza \\ as in qiime2_train.nf
-        --i-reference-taxonomy ref_taxonomy.qza \\ #as in qiime2_train.nf
+        --i-reference-reads ${meta.FW_primer}-${meta.RV_primer}-ref-seq.qza \\
+        --i-reference-taxonomy ref-taxonomy.qza \\
         --i-query ${repseq}  \\
         --o-classification blast_taxonomy.qza  \\
         --verbose
