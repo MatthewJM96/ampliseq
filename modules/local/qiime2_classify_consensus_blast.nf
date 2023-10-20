@@ -30,11 +30,11 @@ process QIIME2_CLASSIFY_CONSENSUS_BLAST {
         --i-reference-reads ${meta.FW_primer}-${meta.RV_primer}-ref-seq.qza \\ as in qiime2_train.nf
         --i-reference-taxonomy ref_taxonomy.qza \\ #as in qiime2_train.nf
         --i-query ${repseq}  \\
-        --o-classification taxonomy.qza  \\
+        --o-classification blast_taxonomy.qza  \\
         --verbose
     qiime metadata tabulate  \\
-        --m-input-file taxonomy.qza  \\
-        --o-visualization taxonomy.qzv  \\
+        --m-input-file blast_taxonomy.qza  \\
+        --o-visualization blast_taxonomy.qzv  \\
         --verbose
     #produce "taxonomy/taxonomy.tsv"
     qiime tools export \\
