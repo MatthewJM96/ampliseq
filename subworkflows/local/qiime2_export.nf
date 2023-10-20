@@ -9,7 +9,7 @@ include { COMBINE_TABLE as COMBINE_TABLE_QIIME2 } from '../../modules/local/comb
 include { COMBINE_TABLE as COMBINE_TABLE_DADA2  } from '../../modules/local/combine_table'
 include { COMBINE_TABLE as COMBINE_TABLE_PPLACE } from '../../modules/local/combine_table'
 include { COMBINE_TABLE as COMBINE_TABLE_SINTAX } from '../../modules/local/combine_table'
-inclide { COMBINE_TABLE as COMBINE_TABLE_SINTAX_BLAST } from '../../modules/local/combine_table'
+include { COMBINE_TABLE as COMBINE_TABLE_SINTAX_BLAST } from '../../modules/local/combine_table'
 
 workflow QIIME2_EXPORT {
     take:
