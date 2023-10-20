@@ -1,5 +1,5 @@
 /*
- * Taxonomic classification with QIIME2
+ * Taxonomic classification with QIIME2 Blast+
  */
 
 include { QIIME2_INSEQ                    } from '../../modules/local/qiime2_inseq'
