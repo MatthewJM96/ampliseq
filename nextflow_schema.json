@@ -346,6 +346,11 @@
                         "greengenes85"
                     ]
                 },
+                "blast_consensus_taxonomy": {
+                    "type": "boolean",
+                    "help_text": "Use Blast consensus classification using QIIME2.",
+                    "description": "If you want to use Blast consensus classification using QIIME2"
+                },
                 "classifier": {
                     "type": "string",
                     "description": "Path to QIIME2 trained classifier file (typically *-classifier.qza)",
