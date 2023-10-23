@@ -11,7 +11,7 @@ process QIIME2_CLASSIFY_CONSENSUS_BLAST {
 
     input:
     path(repseq)
-    path(reference_reads)
+    tuple val(meta), path(reference_reads)
 
     output:
     path("blast_taxonomy.qza"), emit: qza
