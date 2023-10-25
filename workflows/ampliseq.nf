@@ -567,6 +567,8 @@ workflow AMPLISEQ {
             }
         }
 
+        // Import ASV abundance table and sequences into QIIME2
+        QIIME2_INASV ( ch_dada2_asv )
         QIIME2_INSEQ ( ch_fasta )
 
         if (params.blast_consensus_taxonomy) {
@@ -595,10 +597,6 @@ workflow AMPLISEQ {
     // SUBWORKFLOW / MODULES : Downstream analysis with QIIME2
     //
     if ( run_qiime2 ) {
-        // Import ASV abundance table and sequences into QIIME2
-        QIIME2_INASV ( ch_dada2_asv )
-        QIIME2_INSEQ ( ch_fasta )
-
         // Import phylogenetic tree into QIIME2
         if ( params.pplace_tree ) {
             ch_tree = QIIME2_INTREE ( FASTA_NEWICK_EPANG_GAPPA.out.grafted_phylogeny ).qza
