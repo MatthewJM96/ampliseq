@@ -567,9 +567,11 @@ workflow AMPLISEQ {
             }
         }
 
+        QIIME2_INSEQ ( ch_fasta )
+
         if (params.blast_consensus_taxonomy) {
             QIIME2_TAXONOMY_CONSENSUS_BLAST(
-                ch_fasta,
+                QIIME2_INSEQ.out.qza,
                 QIIME2_PREPTAX.out.qza
             )
             ch_blast_consensus_tax = QIIME2_TAXONOMY_CONSENSUS_BLAST.out.tsv
@@ -579,7 +581,7 @@ workflow AMPLISEQ {
         }
 
         QIIME2_TAXONOMY (
-            ch_fasta,
+            QIIME2_INSEQ.out.qza,
             ch_qiime_classifier
         )
         ch_versions = ch_versions.mix( QIIME2_TAXONOMY.out.versions.ifEmpty(null) ) //usually a .first() is here, dont know why this leads here to a warning
