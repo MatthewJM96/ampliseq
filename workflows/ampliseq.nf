@@ -59,7 +59,7 @@ if (params.dada_ref_tax_custom) {
     val_dada_ref_taxonomy = "none"
 }
 
-if (params.qiime_ref_taxonomy && !params.skip_taxonomy && !params.classifier) {
+if (params.qiime_ref_taxonomy && !params.skip_taxonomy && (!params.classifier || params.blast_consensus_taxonomy)) {
     ch_qiime_ref_taxonomy = Channel.fromList(params.qiime_ref_databases[params.qiime_ref_taxonomy]["file"]).map { file(it) }
 } else { ch_qiime_ref_taxonomy = Channel.empty() }
 
