@@ -44,7 +44,7 @@ process QIIME2_CLASSIFY_CONSENSUS_BLAST {
     qiime tools export \\
         --input-path blast_taxonomy.qzv  \\
         --output-path blast_taxonomy
-    cp taxonomy/blast_taxonomy.tsv .
+    cp blast_taxonomy/taxonomy.tsv blast_taxonomy.tsv 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
