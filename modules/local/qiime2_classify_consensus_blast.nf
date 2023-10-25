@@ -1,5 +1,5 @@
 process QIIME2_CLASSIFY_CONSENSUS_BLAST {
-    tag "${repseq},${reference_reads}"
+    tag "${repseq},${meta.FW_primer}-${meta.RV_primer}"
     label 'process_high'
 
     container "quay.io/qiime2/core:2022.11"
