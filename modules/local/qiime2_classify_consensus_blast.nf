@@ -31,6 +31,7 @@ process QIIME2_CLASSIFY_CONSENSUS_BLAST {
         --i-reference-taxonomy ref-taxonomy.qza \\
         --i-query ${repseq}  \\
         --o-classification blast_taxonomy.qza  \\
+        --o-search-results blast_hits.qza
         --verbose
     qiime metadata tabulate  \\
         --m-input-file blast_taxonomy.qza  \\
