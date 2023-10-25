@@ -25,7 +25,7 @@ process QIIME2_CLASSIFY_CONSENSUS_BLAST {
     """
     export XDG_CONFIG_HOME="\${PWD}/HOME"
 
-    qiime feature-classifier classify-consensus  \\
+    qiime feature-classifier classify-consensus-blast  \\
         --p-perc-identity 0.97  \\
         --i-reference-reads ${meta.FW_primer}-${meta.RV_primer}-ref-seq.qza \\
         --i-reference-taxonomy ref-taxonomy.qza \\
